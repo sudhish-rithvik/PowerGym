@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerGym - Hardware Integrated Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header__logo">
+                <h1>⚡ PowerGym</h1>
+                <span class="hardware-status" id="hardwareStatus">🔴 Hardware Disconnected</span>
+            </div>
+            <div class="header__user">
+                <div class="user-info">
+                    <span class="user-name">David Strong</span>
+                    <span class="current-time" id="currentTime">Wed, Aug 06, 2025 - 10:33 PM</span>
+                    <span class="ip-address" id="ipAddress">ESP32: Connecting...</span>
+                </div>
+                <div class="user-avatar">DS</div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">📊 Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">💪 Workouts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">🏋️ Equipment</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">🏆 Rewards</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">👤 Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">🔧 Hardware</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hardware Connection Alert -->
+            <div class="alert-banner" id="connectionAlert">
+                <span>🔧 Connecting to ESP32 Hardware... Please ensure PowerGym monitoring system is powered on.</span>
+                <button onclick="connectToHardware()" class="connect-btn">Retry Connection</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Real-Time Energy Generation Panel -->
+                <div class="card energy-panel">
+                    <div class="card__header">
+                        <h2>Live Energy Generation</h2>
+                        <div class="energy-stats">
+                            <span class="energy-total" id="totalEnergyLive">0.0 Wh</span>
+                            <span class="power-current" id="currentPower">0 W</span>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <canvas id="energyChart"></canvas>
+                        <div class="chart-controls">
+                            <button onclick="resetEnergyData()" class="btn-secondary">Reset Data</button>
+                            <button onclick="exportData()" class="btn-secondary">Export CSV</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hardware Sensor Status -->
+                <div class="card sensor-status">
+                    <div class="card__header">
+                        <h2>Sensor Readings</h2>
+                        <span class="update-time" id="lastUpdate">Last: --</span>
+                    </div>
+                    <div class="card__body">
+                        <div class="sensor-grid">
+                            <div class="sensor-item">
+                                <span class="sensor-label">Speed Sensors</span>
+                                <div class="sensor-values" id="speedSensors">
+                                    <span>T: 0 RPM</span>
+                                    <span>B: 0 RPM</span>
+                                    <span>E: 0 RPM</span>
+                                    <span>R: 0 RPM</span>
+                                </div>
+                            </div>
+                            <div class="sensor-item">
+                                <span class="sensor-label">Load Cells</span>
+                                <div class="sensor-values" id="loadCells">
+                                    <span>Weight: 0.0 kg</span>
+                                    <span>Force: 0.0 N</span>
+                                </div>
+                            </div>
+                            <div class="sensor-item">
+                                <span class="sensor-label">Power Measurement</span>
+                                <div class="sensor-values" id="powerMeasurement">
+                                    <span>V: 0.0V</span>
+                                    <span>I: 0.0A</span>
+                                    <span>P: 0.0W</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment Status with Hardware Data -->
+                <div class="card equipment-grid">
+                    <div class="card__header">
+                        <h2>Equipment Monitor</h2>
+                        <button onclick="calibrateSensors()" class="btn-secondary">Calibrate</button>
+                    </div>
+                    <div class="card__body">
+                        <div class="equipment-list" id="equipmentList">
+                            <!-- Real hardware equipment data -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fitness Metrics with Real Calculations -->
+                <div class="card fitness-metrics">
+                    <div class="card__header">
+                        <h2>Fitness Analytics</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="metric-item">
+                            <span class="metric-label">Real-Time Calories</span>
+                            <span class="metric-value" id="liveCalories">0 / 2,265</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="caloriesProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Active Workout Time</span>
+                            <span class="metric-value" id="activeTime">0 min</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">BMR (Calculated)</span>
+                            <span class="metric-value" id="bmrValue">1,784 cal/day</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Current Heart Rate Zone</span>
+                            <span class="metric-value" id="heartZone">Moderate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-Time Rewards -->
+                <div class="card rewards-panel">
+                    <div class="card__header">
+                        <h2>Live Rewards Tracking</h2>
+                        <span class="level-badge" id="currentLevel">Bronze</span>
+                    </div>
+                    <div class="card__body">
+                        <div class="points-summary">
+                            <div class="points-item">
+                                <span class="points-label">Fitness Points (Live)</span>
+                                <span class="points-value" id="liveFreeness">0</span>
+                            </div>
+                            <div class="points-item">
+                                <span class="points-label">Energy Points (Live)</span>
+                                <span class="points-value" id="liveEnergyPoints">0</span>
+                            </div>
+                            <div class="points-total">
+                                <span class="points-label">Total Points</span>
+                                <span class="points-value" id="liveTotalPoints">0</span>
+                            </div>
+                        </div>
+                        <div class="progress-to-next">
+                            <span id="progressText">Progress to Silver: 0 / 1,000</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="levelProgress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <button class="redeem-btn" id="redeemBtn" onclick="redeemRewards()">Redeem Rewards (0 pts)</button>
+                    </div>
+                </div>
+
+                <!-- Hardware System Status -->
+                <div class="card system-status">
+                    <div class="card__header">
+                        <h2>System Status</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <span class="status-label">ESP32 Connection</span>
+                                <span class="status-value" id="esp32Status">Disconnected</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">WiFi Signal</span>
+                                <span class="status-value" id="wifiSignal">-</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">System Uptime</span>
+                                <span class="status-value" id="systemUptime">0s</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Data Update Rate</span>
+                                <span class="status-value" id="updateRate">1 Hz</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Total Equipment</span>
+                                <span class="status-value" id="totalEquipment">4</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">Active Now</span>
+                                <span class="status-value" id="activeEquipment">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-Time Achievements -->
+                <div class="card achievements">
+                    <div class="card__header">
+                        <h2>Live Achievements</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="achievement-list" id="achievementList">
+                            <!-- Real-time achievement notifications -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="hardware_app.js"></script>
+</body>
+</html>

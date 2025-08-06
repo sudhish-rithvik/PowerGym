@@ -1,0 +1,100 @@
+
+POWERGYM EQUIPMENT MONITORING - WIRING DIAGRAM
+=============================================
+
+ESP32 DEVELOPMENT BOARD CONNECTIONS:
+===================================
+
+SPEED SENSORS (IR Optical Sensors):
+- Treadmill Speed Sensor:
+  * VCC → 3.3V (ESP32)
+  * GND → GND (ESP32)  
+  * OUT → GPIO 2 (Digital Input)
+
+- Stationary Bike Speed Sensor:
+  * VCC → 3.3V (ESP32)
+  * GND → GND (ESP32)
+  * OUT → GPIO 4 (Digital Input)
+
+- Elliptical Speed Sensor:
+  * VCC → 3.3V (ESP32)
+  * GND → GND (ESP32)
+  * OUT → GPIO 5 (Digital Input)
+
+- Rowing Machine Speed Sensor:
+  * VCC → 3.3V (ESP32)
+  * GND → GND (ESP32)
+  * OUT → GPIO 18 (Digital Input)
+
+WEIGHT/FORCE MEASUREMENT (Load Cell + HX711):
+============================================
+- Load Cell Red Wire → E+ (HX711)
+- Load Cell Black Wire → E- (HX711)
+- Load Cell White Wire → A- (HX711)
+- Load Cell Green Wire → A+ (HX711)
+
+- HX711 VDD → 3.3V (ESP32)
+- HX711 GND → GND (ESP32)
+- HX711 DT → GPIO 19 (ESP32)
+- HX711 SCK → GPIO 21 (ESP32)
+
+POWER MEASUREMENT CIRCUIT:
+=========================
+
+VOLTAGE SENSOR (Voltage Divider):
+- Generator Positive → R1 (10kΩ) → GPIO A0 (ESP32)
+- GPIO A0 → R2 (2kΩ) → GND
+- Voltage Range: 0-48V → 0-3.3V (ESP32 ADC)
+
+CURRENT SENSOR (ACS712):
+- Generator Positive → ACS712 IP+ Terminal
+- Load Positive → ACS712 IP- Terminal  
+- ACS712 VCC → 5V (External Supply)
+- ACS712 GND → GND (ESP32)
+- ACS712 OUT → GPIO A1 (ESP32)
+
+STATUS INDICATORS:
+=================
+- Status LED (Green):
+  * GPIO 23 → 220Ω Resistor → LED Anode
+  * LED Cathode → GND
+
+- Power LED (Red):
+  * GPIO 22 → 220Ω Resistor → LED Anode  
+  * LED Cathode → GND
+
+POWER SUPPLY:
+============
+- ESP32: 5V USB or External 7-12V → VIN
+- Sensors: 3.3V from ESP32 onboard regulator
+- ACS712: External 5V supply required
+- Load Cell: Powered through HX711 (3.3V)
+
+EQUIPMENT INTEGRATION POINTS:
+============================
+
+TREADMILL:
+- Speed Sensor: Mount on belt roller with reflective tape
+- Power Tap: Generator connected to drive motor circuit
+
+STATIONARY BIKE:  
+- Speed Sensor: Attach to flywheel or crank arm
+- Power Tap: Generator connected to resistance mechanism
+
+ELLIPTICAL:
+- Speed Sensor: Position on main drive wheel
+- Power Tap: Generator integrated with stride mechanism
+
+ROWING MACHINE:
+- Speed Sensor: Mount on chain/cable pulley system
+- Power Tap: Generator connected to resistance flywheel
+
+GENERATOR CONNECTION EXAMPLE:
+============================
+Equipment Motor → Mechanical Coupling → DC Generator
+DC Generator Output → Power Measurement Circuit → Battery/Load
+
+Typical Generator Specs:
+- Voltage: 12-48V DC
+- Current: 1-20A  
+- Power: 50-500W (depending on equipment)

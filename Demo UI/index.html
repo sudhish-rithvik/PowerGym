@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerGym - Energy & Fitness Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header__logo">
+                <h1>⚡ PowerGym</h1>
+            </div>
+            <div class="header__user">
+                <div class="user-info">
+                    <span class="user-name">David Strong</span>
+                    <span class="current-time" id="currentTime">Wed, Aug 06, 2025 - 10:10 PM</span>
+                </div>
+                <div class="user-avatar">DS</div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">📊 Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">💪 Workouts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">🏋️ Equipment</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">🏆 Rewards</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">👤 Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">⚙️ Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="dashboard-grid">
+                <!-- Energy Generation Panel -->
+                <div class="card energy-panel">
+                    <div class="card__header">
+                        <h2>Energy Generation Today</h2>
+                        <span class="energy-total">390.0 Wh</span>
+                    </div>
+                    <div class="card__body">
+                        <canvas id="energyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Fitness Metrics -->
+                <div class="card fitness-metrics">
+                    <div class="card__header">
+                        <h2>Fitness Progress</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="metric-item">
+                            <span class="metric-label">Calories Burned</span>
+                            <span class="metric-value">1,847 / 2,265</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 81.5%"></div>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">Workout Time</span>
+                            <span class="metric-value">135 min</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">BMR</span>
+                            <span class="metric-value">1,784 cal/day</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="metric-label">TDEE</span>
+                            <span class="metric-value">2,765 cal/day</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rewards Panel -->
+                <div class="card rewards-panel">
+                    <div class="card__header">
+                        <h2>Rewards & Points</h2>
+                        <span class="level-badge gold">Gold Level</span>
+                    </div>
+                    <div class="card__body">
+                        <div class="points-summary">
+                            <div class="points-item">
+                                <span class="points-label">Fitness Points</span>
+                                <span class="points-value">1,350</span>
+                            </div>
+                            <div class="points-item">
+                                <span class="points-label">Energy Points</span>
+                                <span class="points-value">1,950</span>
+                            </div>
+                            <div class="points-total">
+                                <span class="points-label">Total Points</span>
+                                <span class="points-value">3,300</span>
+                            </div>
+                        </div>
+                        <div class="progress-to-next">
+                            <span>Progress to Platinum: 3,300 / 5,000</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 66%"></div>
+                            </div>
+                        </div>
+                        <button class="redeem-btn">Redeem Rewards</button>
+                    </div>
+                </div>
+
+                <!-- Equipment Status -->
+                <div class="card equipment-grid">
+                    <div class="card__header">
+                        <h2>Equipment Status</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="equipment-list" id="equipmentList">
+                            <!-- Equipment items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Stats -->
+                <div class="card personal-stats">
+                    <div class="card__header">
+                        <h2>Personal Profile</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="profile-stats">
+                            <div class="stat-row">
+                                <span>Age:</span>
+                                <span>28 years</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Weight:</span>
+                                <span>75 kg</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Height:</span>
+                                <span>175 cm</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Goal:</span>
+                                <span>Weight Loss</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Activity Level:</span>
+                                <span>Moderately Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="card achievements">
+                    <div class="card__header">
+                        <h2>Recent Achievements</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="achievement-list" id="achievementList">
+                            <!-- Achievements will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
